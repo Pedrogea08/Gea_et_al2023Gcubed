@@ -1,0 +1,46 @@
+//Reference model: W=300km, OP_thickness=70km, SP_thickness=95km
+{
+  "version":"0.4",
+  "coordinate system":{"model":"cartesian"},
+  "features":
+  [
+    //Defining the overriding plate (continental crust + lithosphere)
+    {"model":"continental plate", "name":"OP", 
+     "coordinates":[[-1e3,-1e3],[2001e3,-1e3],[2001e3,300e3],[-1e3,300e3]], 
+     "temperature models":[{"model":"linear", "max depth":90e3, "bottom temperature":1643, "top temperature":293},
+                           {"model":"uniform", "temperature":1643, "min depth":90e3}],
+     "composition models":[{"model":"uniform", "compositions":[1], "max depth":30e3},
+                           {"model":"uniform", "compositions":[4], "min depth":30e3, "max depth":90e3}]},
+
+    //Defining the Subducting plate 
+    {"model":"oceanic plate", "name":"SP", 
+     "coordinates":[[-1e3,-1e3],[1000e3,-1e3],[1000e3,300e3],[-1e3,300e3]], 
+     "temperature models":[{"model":"linear", "max depth": 95e3, "bottom temperature":1643, "top temperature":293}],
+     "composition models":[{"model":"uniform", "compositions":[0], "max depth":10e3},
+                           {"model":"uniform", "compositions":[3], "min depth":10e3, "max depth":95e3}]},
+
+    //Defining the slab 
+    {"model":"subducting plate", "name":"Subducting plate", "coordinates":[[1000e3,-1e3],[1000e3,300e3]], "dip point":[2000e3,0],
+     "segments":[{"length":100e3, "thickness":[95e3], "angle":[0,40]},
+                 {"length":120e3, "thickness":[95e3], "angle":[40]}],
+     "temperature models":[{"model":"linear", "max distance slab top":95e3, "bottom temperature":1643, "top temperature":293}],
+     "composition models":[{"model":"uniform", "compositions":[0], "max distance slab top":10e3},
+                           {"model":"uniform", "compositions":[3], "min distance slab top":10e3, "max distance slab top":95e3 }]},
+
+    //Defining the weak layer (emulating a STEP FAULT) between the LP and the other two plates
+    {"model":"mantle layer", "name":"STEP", 
+     "coordinates":[[-1e3,300e3],[2001e3,300e3],[2001e3,320e3],[-1e3,320e3]], 
+     "temperature models":[{"model":"linear", "max depth": 95e3, "bottom temperature":1643, "top temperature":293},
+                           {"model":"uniform", "temperature":1643, "min depth":95e3}],
+     "composition models":[{"model":"uniform", "compositions":[2], "max depth":95e3},
+                           {"model":"uniform", "compositions":[4], "min depth":95e3, "max depth":660e3}]},
+
+    //Defining the lateral plate (LP)
+    {"model":"mantle layer", "name":"LP", 
+     "coordinates":[[-1e3,320e3],[2001e3,320e3],[2001e3,1301e3],[-1e3,1301e3]], 
+     "temperature models":[{"model":"linear", "max depth": 95e3, "bottom temperature":1643, "top temperature":293},
+                           {"model":"uniform", "temperature":1643, "min depth":95e3}],
+     "composition models":[{"model":"uniform", "compositions":[4], "max depth":660e3}]}
+
+  ]
+}
